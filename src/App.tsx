@@ -324,7 +324,7 @@ const GALLERY_ITEMS: GalleryItem[] = [
 
 const SOCIAL_LINKS: SocialLink[] = [
   { id: "ig", icon: "fa-brands fa-instagram", url: "#", color: "hover:text-[#E4405F]" },
-  { id: "fb", icon: "fa-brands fa-facebook", url: "#", color: "hover:text-[#1877F2]" },
+  { id: "fb", icon: "fa-brands fa-facebook", url: "https://www.facebook.com/share/1BMXVURMPb/", color: "hover:text-[#1877F2]" },
   { id: "yt", icon: "fa-brands fa-youtube", url: "#", color: "hover:text-[#FF0000]" },
   { id: "tk", icon: "fa-brands fa-tiktok", url: "#", color: "hover:text-[#000000]" },
 ];
