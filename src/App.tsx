@@ -152,7 +152,7 @@ const LINKS: LinkItem[] = [
   {
     id: "1",
     title: "Pendaftaran Madrasah",
-    subtitle: "PPDB MA 2025",
+    subtitle: "PPDB MA 2026",
     url: "https://s.id/PPDB_MA_2025",
     icon: "fa-solid fa-user-plus",
     delay: "0s",
