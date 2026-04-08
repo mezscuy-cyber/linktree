@@ -384,7 +384,7 @@ export default function App() {
             onClick={() => setCurrentView("links")}
           >
             <img
-              src="/logo.png"
+              src="./logo.png"
               alt="BES Al-Manshuriyah Logo"
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"
