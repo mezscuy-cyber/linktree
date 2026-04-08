@@ -49,16 +49,16 @@ const PROGRAMS: Program[] = [
 
 const MEMBERS: Member[] = [
   // MANDATARIS
-  { id: "m1", name: "Ahmad Fauzi", position: "Ketua Umum", photo: "https://picsum.photos/seed/member1/400/400", divisionId: "mandataris" },
-  { id: "m2", name: "Siti Aminah", position: "Wakil Ketua", photo: "https://picsum.photos/seed/member2/400/400", divisionId: "mandataris" },
-  { id: "m3", name: "Budi Santoso", position: "Sekretaris I", photo: "https://picsum.photos/seed/member3/400/400", divisionId: "mandataris" },
-  { id: "m3b", name: "Hendra Kurniawan", position: "Sekretaris II", photo: "https://picsum.photos/seed/member3b/400/400", divisionId: "mandataris" },
-  { id: "m4", name: "Laila Sari", position: "Bendahara I", photo: "https://picsum.photos/seed/member4/400/400", divisionId: "mandataris" },
-  { id: "m4b", name: "Rina Septiani", position: "Bendahara II", photo: "https://picsum.photos/seed/member4b/400/400", divisionId: "mandataris" },
+  { id: "m1", name: "Gibran Fath Naseh.A", position: "Ketua", photo: "https://picsum.photos/seed/member1/400/400", divisionId: "mandataris" },
+  { id: "m2", name: "Nasilya Nasma.H", position: "Wakil Ketua", photo: "https://picsum.photos/seed/member2/400/400", divisionId: "mandataris" },
+  { id: "m3", name: "Nazwa Fitriani", position: "Sekretaris I", photo: "https://picsum.photos/seed/member3/400/400", divisionId: "mandataris" },
+  { id: "m3b", name: "Siti Nabila", position: "Sekretaris II", photo: "https://picsum.photos/seed/member3b/400/400", divisionId: "mandataris" },
+  { id: "m4", name: "Siti Halimah", position: "Bendahara I", photo: "https://picsum.photos/seed/member4/400/400", divisionId: "mandataris" },
+  { id: "m4b", name: "Fatmatu Zahra z.s", position: "Bendahara II", photo: "https://picsum.photos/seed/member4b/400/400", divisionId: "mandataris" },
   // DPT
-  { id: "m5", name: "H. Abdullah", position: "Ketua DPT", photo: "https://picsum.photos/seed/member5/400/400", divisionId: "dpt" },
-  { id: "m6", name: "Hj. Fatimah", position: "Anggota DPT", photo: "https://picsum.photos/seed/member6/400/400", divisionId: "dpt" },
-  { id: "m6b", name: "H. Sulaiman", position: "Anggota DPT", photo: "https://picsum.photos/seed/member6b/400/400", divisionId: "dpt" },
+  { id: "m5", name: "Raka Pratama", position: "Ketua", photo: "https://picsum.photos/seed/member5/400/400", divisionId: "dpt" },
+  { id: "m6", name: "Ai Sarah Sumiati", position: "Wakil", photo: "https://picsum.photos/seed/member6/400/400", divisionId: "dpt" },
+  { id: "m6b", name: "Riski Gunawan", position: "Anggota", photo: "https://picsum.photos/seed/member6b/400/400", divisionId: "dpt" },
   // DPR
   { id: "m7", name: "Rizky Pratama", position: "Ketua DPR", photo: "https://picsum.photos/seed/member7/400/400", divisionId: "dpr" },
   { id: "m8", name: "Dewi Lestari", position: "Sekretaris DPR", photo: "https://picsum.photos/seed/member8/400/400", divisionId: "dpr" },
