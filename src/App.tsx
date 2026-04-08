@@ -323,10 +323,10 @@ const GALLERY_ITEMS: GalleryItem[] = [
 ];
 
 const SOCIAL_LINKS: SocialLink[] = [
-  { id: "ig", icon: "fa-brands fa-instagram", url: "#", color: "hover:text-[#E4405F]" },
+  { id: "ig", icon: "fa-brands fa-instagram", url: "https://www.instagram.com/besmatcha_?igsh=MTN4OWt1djJpYXpxZA==", color: "hover:text-[#E4405F]" },
   { id: "fb", icon: "fa-brands fa-facebook", url: "https://www.facebook.com/share/1BMXVURMPb/", color: "hover:text-[#1877F2]" },
-  { id: "yt", icon: "fa-brands fa-youtube", url: "#", color: "hover:text-[#FF0000]" },
-  { id: "tk", icon: "fa-brands fa-tiktok", url: "#", color: "hover:text-[#000000]" },
+  { id: "yt", icon: "fa-brands fa-youtube", url: "https://youtube.com/@besmaalmanshuriyah?si=EewfZp2MxlbRrRbn", color: "hover:text-[#FF0000]" },
+  { id: "tk", icon: "fa-brands fa-tiktok", url: "https://www.tiktok.com/@alman_105?_r=1&_t=ZS-95N2GXRyCoB", color: "hover:text-[#000000]" },
 ];
 
 export default function App() {
