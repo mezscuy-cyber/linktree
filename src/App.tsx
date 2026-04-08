@@ -60,7 +60,7 @@ const MEMBERS: Member[] = [
   { id: "m6", name: "Ai Sarah Sumiati", position: "Wakil", photo: "https://picsum.photos/seed/member6/400/400", divisionId: "dpt" },
   { id: "m6b", name: "Riski Gunawan", position: "Anggota", photo: "https://picsum.photos/seed/member6b/400/400", divisionId: "dpt" },
   // DPR
-  { id: "m7", name: "Rizky Pratama", position: "Ketua DPR", photo: "https://picsum.photos/seed/member7/400/400", divisionId: "dpr" },
+  { id: "m7", name: "M. Paijal", position: "Ketua DPR", photo: "https://picsum.photos/seed/member7/400/400", divisionId: "dpr" },
   { id: "m8", name: "Dewi Lestari", position: "Sekretaris DPR", photo: "https://picsum.photos/seed/member8/400/400", divisionId: "dpr" },
   { id: "m8b", name: "Yusuf Mansur", position: "Anggota DPR", photo: "https://picsum.photos/seed/member8b/400/400", divisionId: "dpr" },
   // INFOKOM (4 Anggota)
