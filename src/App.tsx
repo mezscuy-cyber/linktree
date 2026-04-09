@@ -50,7 +50,7 @@ const PROGRAMS: Program[] = [
 const MEMBERS: Member[] = [
   // MANDATARIS
   { id: "m1", name: "Gibran Fath Naseh.A", position: "Ketua", photo: "https://picsum.photos/seed/member1/400/400", divisionId: "mandataris" },
-  { id: "m2", name: "Nasilya Nasma.H", position: "Wakil Ketua", photo: "https://picsum.photos/seed/member2/400/400", divisionId: "mandataris" },
+  { id: "m2", name: "Nasilya Nasma.H", position: "Wakil Ketua", photo: "/mm/m2.jpg", divisionId: "mandataris" },
   { id: "m3", name: "Nazwa Fitriani", position: "Sekretaris I", photo: "https://picsum.photos/seed/member3/400/400", divisionId: "mandataris" },
   { id: "m3b", name: "Siti Nabila", position: "Sekretaris II", photo: "https://picsum.photos/seed/member3b/400/400", divisionId: "mandataris" },
   { id: "m4", name: "Siti Halimah", position: "Bendahara I", photo: "https://picsum.photos/seed/member4/400/400", divisionId: "mandataris" },
