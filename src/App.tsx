@@ -580,7 +580,7 @@ export default function App() {
                     </div>
                     <div>
                       <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Alamat</h4>
-                      <p className="text-sm font-[500] text-black/70">Jl. Raya Al-Manshuriyah No. 123, <br/>Jawa Barat, Indonesia</p>
+                      <p className="text-sm font-[500] text-black/70">Jl. Raya Pagelaran Km.61, <br/>Jawa Barat, Indonesia</p>
                     </div>
                   </div>
 
@@ -590,7 +590,7 @@ export default function App() {
                     </div>
                     <div>
                       <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Email</h4>
-                      <p className="text-sm font-[500] text-black/70">bes@almanshuriyah.sch.id</p>
+                      <p className="text-sm font-[500] text-black/70">besmaalmanshuriyah@gmail.com</p>
                     </div>
                   </div>
 
