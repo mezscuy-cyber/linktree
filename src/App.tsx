@@ -426,7 +426,7 @@ export default function App() {
   const [hasPlayedSound, setHasPlayedSound] = useState(false);
 
   const speakWelcome = () => {
-    if (hasPlayedSound) return;
+    if (hasPlayedSound || !window.speechSynthesis) return;
     
     const text = "Selamat datang di portal profil Badan Eksekutif Siswa";
     const utterance = new SpeechSynthesisUtterance(text);
