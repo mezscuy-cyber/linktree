@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "motion/react";
 
 interface LinkItem {
   id: string;
@@ -282,7 +282,8 @@ function FlashButton({
   whileTap,
   initial,
   animate,
-  transition
+  transition,
+  type = "button"
 }: { 
   children: React.ReactNode; 
   onClick?: (e?: any) => void; 
@@ -295,6 +296,7 @@ function FlashButton({
   animate?: any;
   transition?: any;
   key?: string | number;
+  type?: "button" | "submit" | "reset";
 }) {
   const [showFlash, setShowFlash] = useState(false);
 
@@ -306,6 +308,7 @@ function FlashButton({
 
   return (
     <motion.button
+      type={type}
       initial={initial}
       animate={animate}
       whileHover={whileHover}
@@ -395,10 +398,46 @@ const SOCIAL_LINKS: SocialLink[] = [
   { id: "tk", icon: "fa-brands fa-tiktok", url: "https://www.tiktok.com/@alman_105?_r=1&_t=ZS-95N2GXRyCoB", color: "hover:text-[#000000]" },
 ];
 
+const TypewriterText = ({ text }: { text: string }) => {
+  return (
+    <motion.span key={text}>
+      {text.split("").map((char, index) => (
+        <motion.span
+          key={index}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 0.01,
+            delay: index * 0.03,
+          }}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </motion.span>
+  );
+};
+
 export default function App() {
   const [mounted, setMounted] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [currentView, setCurrentView] = useState<"links" | "structure" | "programs" | "division_profile" | "gallery" | "extracurricular" | "contact">("links");
   const [selectedDivision, setSelectedDivision] = useState<string | null>(null);
+  const [hasPlayedSound, setHasPlayedSound] = useState(false);
+
+  const speakWelcome = () => {
+    if (hasPlayedSound) return;
+    
+    const text = "Selamat datang di portal profil Badan Eksekutif Siswa";
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'id-ID'; // Indonesian
+    utterance.rate = 0.9; // Slightly slower for clarity
+    utterance.pitch = 1;
+    
+    window.speechSynthesis.speak(utterance);
+    setHasPlayedSound(true);
+  };
+
   const setCursorHovered = (_val: boolean) => {};
   
   // Mouse position for parallax
@@ -423,15 +462,139 @@ export default function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
+  const handleEnter = () => {
+    setShowSplash(false);
+    speakWelcome();
+  };
+
   if (!mounted) return null;
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="relative min-h-screen flex flex-col items-center py-20 px-6 overflow-x-hidden"
-    >
+    <>
+      <AnimatePresence>
+        {showSplash && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 1.05, filter: "blur(20px)" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#f8f8f8] overflow-hidden"
+          >
+            {/* Atmospheric Background */}
+            <div className="absolute inset-0 z-0">
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.5, 0.3],
+                  x: [0, 50, 0],
+                  y: [0, -30, 0]
+                }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-blue-100/40 blur-[120px]" 
+              />
+              <motion.div 
+                animate={{ 
+                  scale: [1.2, 1, 1.2],
+                  opacity: [0.2, 0.4, 0.2],
+                  x: [0, -40, 0],
+                  y: [0, 60, 0]
+                }}
+                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-100/30 blur-[100px]" 
+              />
+              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay" />
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col items-center z-10 text-center px-6"
+            >
+              {/* Enhanced Avatar/Logo Container */}
+              <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 1, type: "spring", stiffness: 100 }}
+                className="relative mb-12"
+              >
+                <div className="absolute inset-0 bg-black/5 blur-2xl rounded-full scale-110 animate-pulse" />
+                <div className="w-40 h-40 rounded-full neumorphic-raised p-4 flex items-center justify-center bg-white/80 backdrop-blur-sm relative overflow-hidden group">
+                  <motion.div 
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 opacity-[0.05] border-2 border-dashed border-black rounded-full scale-150"
+                  />
+                  <img 
+                    src="/logo.png" 
+                    alt="Logo BES" 
+                    className="w-28 h-28 object-contain relative z-10 drop-shadow-2xl"
+                    onError={(e) => {
+                      e.currentTarget.src = "https://picsum.photos/seed/school-logo/400/400";
+                    }}
+                  />
+                </div>
+              </motion.div>
+              
+              <div className="space-y-4 mb-16">
+                <motion.h1 
+                  initial={{ opacity: 0, letterSpacing: "12px" }}
+                  animate={{ opacity: 1, letterSpacing: "6px" }}
+                  transition={{ delay: 0.7, duration: 1.2 }}
+                  className="text-4xl md:text-5xl font-[900] text-black uppercase font-display leading-none"
+                >
+                  PORTAL PROFIL
+                </motion.h1>
+                <motion.div
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "100%" }}
+                  transition={{ delay: 1, duration: 1 }}
+                  className="h-[1px] bg-black/10 max-w-[100px] mx-auto"
+                />
+                <motion.p 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.5 }}
+                  transition={{ delay: 1.2, duration: 1 }}
+                  className="text-[12px] font-[600] text-black uppercase tracking-[8px]"
+                >
+                  Badan Eksekutif Siswa
+                </motion.p>
+              </div>
+
+              <FlashButton
+                onClick={handleEnter}
+                whileHover={{ scale: 1.05, backgroundColor: "#000" }}
+                whileTap={{ scale: 0.95 }}
+                className="px-16 py-6 rounded-2xl neumorphic-raised-dark text-white text-[12px] font-[900] uppercase tracking-[6px] transition-all shadow-2xl shadow-black/20 group relative overflow-hidden"
+              >
+                <span className="relative z-10">Buka Portal</span>
+                <motion.div 
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+                />
+              </FlashButton>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5, duration: 1 }}
+              className="absolute bottom-12 text-center"
+            >
+              <p className="text-[10px] font-[700] text-black/20 uppercase tracking-[4px] flex items-center justify-center gap-3">
+                <span className="w-8 h-[1px] bg-black/10" />
+                Madrasah Aliyah Al-Manshuriyah
+                <span className="w-8 h-[1px] bg-black/10" />
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="relative min-h-screen flex flex-col items-center py-20 px-6 overflow-x-hidden"
+      >
       {/* Background Shapes with Parallax */}
       <div className="bg-shapes">
         <motion.div style={{ x: shape1X, y: shape1Y }} className="shape shape-1" />
@@ -450,7 +613,7 @@ export default function App() {
             onClick={() => setCurrentView("links")}
           >
             <img
-              src="./logo.png"
+              src="/logo.png"
               alt="BES Al-Manshuriyah Logo"
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"
@@ -468,12 +631,14 @@ export default function App() {
             transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-5xl font-[800] tracking-tight text-black font-display"
           >
-            {currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
-             currentView === "structure" ? "ANGGOTA BES" : 
-             currentView === "programs" ? "PROGRAM KERJA" : 
-             currentView === "gallery" ? "GALERI KEGIATAN" : 
-             currentView === "extracurricular" ? "EKSTRAKURIKULER" : 
-             currentView === "contact" ? "HUBUNGI KAMI" : "PROFIL ANGGOTA"}
+            <TypewriterText text={
+              currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
+              currentView === "structure" ? "ANGGOTA BES" : 
+              currentView === "programs" ? "PROGRAM KERJA" : 
+              currentView === "gallery" ? "GALERI KEGIATAN" : 
+              currentView === "extracurricular" ? "EKSTRAKURIKULER" : 
+              currentView === "contact" ? "HUBUNGI KAMI" : "PROFIL ANGGOTA"
+            } />
           </motion.h1>
           <motion.p 
             initial={{ y: 20, opacity: 0 }}
@@ -967,6 +1132,7 @@ export default function App() {
         </div>
       </footer>
     </motion.div>
+    </>
   );
 }
 
