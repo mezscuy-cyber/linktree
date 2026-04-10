@@ -49,55 +49,56 @@ const PROGRAMS: Program[] = [
 
 const MEMBERS: Member[] = [
   // MANDATARIS
-  { id: "m1", name: "Gibran Fath Naseh.A", position: "Ketua", photo: "https://picsum.photos/seed/member1/400/400", divisionId: "mandataris" },
+  { id: "m1", name: "Gibran Fath Naseh.A", position: "Ketua", photo: "/mm/m1.jpg", divisionId: "mandataris" },
   { id: "m2", name: "Nasilya Nasma.H", position: "Wakil Ketua", photo: "/mm/m2.jpg", divisionId: "mandataris" },
-  { id: "m3", name: "Nazwa Fitriani", position: "Sekretaris I", photo: "https://picsum.photos/seed/member3/400/400", divisionId: "mandataris" },
-  { id: "m3b", name: "Siti Nabila", position: "Sekretaris II", photo: "https://picsum.photos/seed/member3b/400/400", divisionId: "mandataris" },
-  { id: "m4", name: "Siti Halimah", position: "Bendahara I", photo: "https://picsum.photos/seed/member4/400/400", divisionId: "mandataris" },
-  { id: "m4b", name: "Fatmatu Zahra z.s", position: "Bendahara II", photo: "https://picsum.photos/seed/member4b/400/400", divisionId: "mandataris" },
+  { id: "m3", name: "Nazwa Fitriani", position: "Sekretaris I", photo: "/mm/m3.jpg", divisionId: "mandataris" },
+  { id: "m3b", name: "Siti Nabila", position: "Sekretaris II", photo: "/mm/m3b.jpg", divisionId: "mandataris" },
+  { id: "m4", name: "Siti Halimah", position: "Bendahara I", photo: "/mm/m4.jpg", divisionId: "mandataris" },
+  { id: "m4b", name: "Fatmatu zahra z.s", position: "Bendahara II", photo: "/mm/m4b.jpg", divisionId: "mandataris" },
   // DPT
-  { id: "m5", name: "Raka Pratama", position: "Ketua", photo: "https://picsum.photos/seed/member5/400/400", divisionId: "dpt" },
-  { id: "m6", name: "Ai Sarah Sumiati", position: "Wakil", photo: "https://picsum.photos/seed/member6/400/400", divisionId: "dpt" },
-  { id: "m6b", name: "Riski Gunawan", position: "Anggota", photo: "https://picsum.photos/seed/member6b/400/400", divisionId: "dpt" },
+  { id: "m5", name: "Rara Pratama", position: "Ketua", photo: "/mm/m5.jpg", divisionId: "dpt" },
+  { id: "m6", name: "Ai Sarah Sumiati", position: "Wakil", photo: "/mm/m6.jpg", divisionId: "dpt" },
+  { id: "m6b", name: "Riski Gunawan", position: "Anggota", photo: "/mm/m6b.jpg", divisionId: "dpt" },
   // DPR
-  { id: "m7", name: "M. Paijal", position: "Ketua DPR", photo: "https://picsum.photos/seed/member7/400/400", divisionId: "dpr" },
-  { id: "m8", name: "Dewi Lestari", position: "Sekretaris DPR", photo: "https://picsum.photos/seed/member8/400/400", divisionId: "dpr" },
-  { id: "m8b", name: "Yusuf Mansur", position: "Anggota DPR", photo: "https://picsum.photos/seed/member8b/400/400", divisionId: "dpr" },
-  // INFOKOM (4 Anggota)
-  { id: "m9", name: "Andi Wijaya", position: "Koordinator INFOKOM", photo: "https://picsum.photos/seed/infokom1/400/400", divisionId: "infokom" },
-  { id: "m10", name: "Rina Melati", position: "Anggota INFOKOM", photo: "https://picsum.photos/seed/infokom2/400/400", divisionId: "infokom" },
-  { id: "m11", name: "Fajar Siddiq", position: "Anggota INFOKOM", photo: "https://picsum.photos/seed/infokom3/400/400", divisionId: "infokom" },
-  { id: "m12", name: "Siska Putri", position: "Anggota INFOKOM", photo: "https://picsum.photos/seed/infokom4/400/400", divisionId: "infokom" },
-  // AGAMA (3 Anggota)
-  { id: "m13", name: "Ustadz Manshur", position: "Koordinator AGAMA", photo: "https://picsum.photos/seed/agama1/400/400", divisionId: "agama" },
-  { id: "m14", name: "Siti Khadijah", position: "Anggota AGAMA", photo: "https://picsum.photos/seed/agama2/400/400", divisionId: "agama" },
-  { id: "m15", name: "Ahmad Zaki", position: "Anggota AGAMA", photo: "https://picsum.photos/seed/agama3/400/400", divisionId: "agama" },
-  // HUKUM (4 Anggota)
-  { id: "m16", name: "Bambang", position: "Koordinator HUKUM", photo: "https://picsum.photos/seed/hukum1/400/400", divisionId: "hukum" },
-  { id: "m17", name: "Agus", position: "Anggota HUKUM", photo: "https://picsum.photos/seed/hukum2/400/400", divisionId: "hukum" },
-  { id: "m18", name: "Rudi", position: "Anggota HUKUM", photo: "https://picsum.photos/seed/hukum3/400/400", divisionId: "hukum" },
-  { id: "m19", name: "Santi", position: "Anggota HUKUM", photo: "https://picsum.photos/seed/hukum4/400/400", divisionId: "hukum" },
-  // SOSIAL (3 Anggota)
-  { id: "m20", name: "Indah", position: "Koordinator SOSIAL", photo: "https://picsum.photos/seed/sosial1/400/400", divisionId: "sosial" },
-  { id: "m21", name: "Joko", position: "Anggota SOSIAL", photo: "https://picsum.photos/seed/sosial2/400/400", divisionId: "sosial" },
-  { id: "m22", name: "Lestari", position: "Anggota SOSIAL", photo: "https://picsum.photos/seed/sosial3/400/400", divisionId: "sosial" },
-  // DISPORA (3 Anggota)
-  { id: "m23", name: "Taufik", position: "Koordinator DISPORA", photo: "https://picsum.photos/seed/dispora1/400/400", divisionId: "dispora" },
-  { id: "m24", name: "Eko", position: "Anggota DISPORA", photo: "https://picsum.photos/seed/dispora2/400/400", divisionId: "dispora" },
-  { id: "m25", name: "Bayu", position: "Anggota DISPORA", photo: "https://picsum.photos/seed/dispora3/400/400", divisionId: "dispora" },
-  // BAKAT MINAT (3 Anggota)
-  { id: "m26", name: "Maya", position: "Koordinator BAKAT MINAT", photo: "https://picsum.photos/seed/bakat1/400/400", divisionId: "bakat_minat" },
-  { id: "m27", name: "Dina", position: "Anggota BAKAT MINAT", photo: "https://picsum.photos/seed/bakat2/400/400", divisionId: "bakat_minat" },
-  { id: "m28", name: "Reza", position: "Anggota BAKAT MINAT", photo: "https://picsum.photos/seed/bakat3/400/400", divisionId: "bakat_minat" },
-  // KESEHATAN (3 Anggota)
-  { id: "m29", name: "Dr. Sarah", position: "Koordinator KESEHATAN", photo: "https://picsum.photos/seed/kesehatan1/400/400", divisionId: "kesehatan" },
-  { id: "m30", name: "Ani", position: "Anggota KESEHATAN", photo: "https://picsum.photos/seed/kesehatan2/400/400", divisionId: "kesehatan" },
-  { id: "m31", name: "Budi", position: "Anggota KESEHATAN", photo: "https://picsum.photos/seed/kesehatan3/400/400", divisionId: "kesehatan" },
+  { id: "m7", name: "M. Paijal", position: "Ketua DPR", photo: "/mm/m7.jpg", divisionId: "dpr" },
+  { id: "m8", name: "Alvi Nurvadilah", position: "Wakil DPR", photo: "/mm/m8.jpg", divisionId: "dpr" },
+  { id: "m8b", name: "Intan Anggistiani", position: "Anggota DPR", photo: "/mm/m8b.jpg", divisionId: "dpr" },
+  // INFOKOM
+  { id: "m9", name: "Siva Sri lestari", position: "Koordinator INFOKOM", photo: "/mm/m9.jpg", divisionId: "infokom" },
+  { id: "m10", name: "Wanda", position: "Anggota INFOKOM", photo: "/mm/m10.jpg", divisionId: "infokom" },
+  { id: "m11", name: "M.rafli akbar", position: "Anggota INFOKOM", photo: "/mm/m11.jpg", divisionId: "infokom" },
+  { id: "m12", name: "Khoirunnisa putri", position: "Anggota INFOKOM", photo: "/mm/m12.jpg", divisionId: "infokom" },
+  // AGAMA
+  { id: "m13", name: "Soifi", position: "Koordinator AGAMA", photo: "/mm/m13.jpg", divisionId: "agama" },
+  { id: "m14", name: "Natasjya sri lestari", position: "Anggota AGAMA", photo: "/mm/m14.jpg", divisionId: "agama" },
+  { id: "m15", name: "Putri permata sari", position: "Anggota AGAMA", photo: "/mm/m15.jpg", divisionId: "agama" },
+  // HUKUM
+  { id: "m16", name: "Ilham maulana", position: "Koordinator HUKUM", photo: "/mm/m16.jpg", divisionId: "hukum" },
+  { id: "m17", name: "Moch rijal", position: "Anggota HUKUM", photo: "/mm/m17.jpg", divisionId: "hukum" },
+  { id: "m18", name: "Adhany amelia", position: "Anggota HUKUM", photo: "/mm/m18.jpg", divisionId: "hukum" },
+  { id: "m19", name: "Dede nurakmaliah", position: "Anggota HUKUM", photo: "/mm/m19.jpg", divisionId: "hukum" },
+  // SOSIAL
+  { id: "m20", name: "Shalma siti sopiah", position: "Koordinator SOSIAL", photo: "/mm/m20.jpg", divisionId: "sosial" },
+  { id: "m21", name: "Diah sopa riah", position: "Anggota SOSIAL", photo: "/mm/m21.jpg", divisionId: "sosial" },
+  { id: "m22", name: "Cici wulansari", position: "Anggota SOSIAL", photo: "/mm/m22.jpg", divisionId: "sosial" },
+  // DISPORA
+  { id: "m23", name: "Regina mustika rama", position: "Koordinator DISPORA", photo: "/mm/m23.jpg", divisionId: "dispora" },
+  { id: "m24", name: "Moch vihir rakan setiawan", position: "Anggota DISPORA", photo: "/mm/m24.jpg", divisionId: "dispora" },
+  { id: "m25", name: "Revalina", position: "Anggota DISPORA", photo: "/mm/m25.jpg", divisionId: "dispora" },
+  // BAKAT MINAT
+  { id: "m26", name: "Meylsa Rachma sapitri", position: "Koordinator BAKAT MINAT", photo: "/mm/m26.jpg", divisionId: "bakat_minat" },
+  { id: "m27", name: "Gea maulida", position: "Anggota BAKAT MINAT", photo: "/mm/m27.jpg", divisionId: "bakat_minat" },
+  { id: "m28", name: "Silfia nurkaromah", position: "Anggota BAKAT MINAT", photo: "/mm/m28.jpg", divisionId: "bakat_minat" },
+  // KESEHATAN
+  { id: "m29", name: "Anisa Trinanda", position: "Koordinator KESEHATAN", photo: "/mm/m29.jpg", divisionId: "kesehatan" },
+  { id: "m30", name: "Zihan Cahya indriani", position: "Anggota KESEHATAN", photo: "/mm/m30.jpg", divisionId: "kesehatan" },
+  { id: "m31", name: "Alya april. N", position: "Anggota KESEHATAN", photo: "/mm/m31.jpg", divisionId: "kesehatan" },
 ];
 
 interface ExtraItem {
   id: string;
   title: string;
+  subtitle?: string;
   icon: string;
   description: string;
   schedule: string;
@@ -109,42 +110,107 @@ const EXTRA_ITEMS: ExtraItem[] = [
     title: "Pramuka",
     icon: "fa-solid fa-campground",
     description: "Membentuk karakter disiplin, mandiri, dan jiwa kepemimpinan melalui kepanduan.",
-    schedule: "Sabtu, 14:00 WIB"
+    schedule: "Sabtu, 09:00 WIB"
   },
   {
     id: "e2",
-    title: "Paskibra",
-    icon: "fa-solid fa-flag",
-    description: "Pelatihan baris-berbaris dan pengibaran bendera dengan kedisiplinan tinggi.",
-    schedule: "Rabu, 15:30 WIB"
+    title: "Muhadoroh (Kultum)",
+    icon: "fa-solid fa-microphone-lines",
+    description: "Melatih kemampuan public speaking dan dakwah islami bagi siswa.",
+    schedule: "Kamis, 09:00 WIB"
   },
   {
     id: "e3",
-    title: "PMR",
-    icon: "fa-solid fa-kit-medical",
-    description: "Pelayanan kesehatan remaja dan pertolongan pertama pada kecelakaan.",
-    schedule: "Kamis, 15:30 WIB"
+    title: "Marawis & Hadroh",
+    icon: "fa-solid fa-drum-steelpan",
+    description: "Seni musik islami dengan perkusi tradisional yang harmonis.",
+    schedule: "Rabu, 09:00 WIB"
   },
   {
     id: "e4",
-    title: "Seni Musik",
+    title: "Marching Band",
+    subtitle: "GEMA AL MANSHURIYAH",
     icon: "fa-solid fa-music",
-    description: "Wadah kreativitas dalam bermusik, vokal, dan pengembangan bakat seni.",
-    schedule: "Jumat, 14:00 WIB"
+    description: "Korps musik kebanggaan madrasah dengan perpaduan alat musik tiup dan perkusi.",
+    schedule: "Minggu, 09:00 WIB"
   },
   {
     id: "e5",
-    title: "Futsal",
-    icon: "fa-solid fa-futbol",
-    description: "Pengembangan bakat olahraga bola besar dan kerjasama tim di lapangan.",
-    schedule: "Selasa, 16:00 WIB"
+    title: "Qiro'at",
+    icon: "fa-solid fa-book-quran",
+    description: "Seni membaca Al-Qur'an dengan lantunan nada yang indah dan tartil.",
+    schedule: "Selasa, 09:00 WIB"
   },
   {
     id: "e6",
-    title: "Karya Ilmiah Remaja",
-    icon: "fa-solid fa-microscope",
-    description: "Eksplorasi sains dan penelitian untuk mengasah daya kritis siswa.",
-    schedule: "Senin, 15:30 WIB"
+    title: "Palang Merah Remaja (PMR)",
+    icon: "fa-solid fa-kit-medical",
+    description: "Pelayanan kesehatan remaja dan pertolongan pertama pada kecelakaan.",
+    schedule: "Kamis, 09:00 WIB"
+  },
+  {
+    id: "e7",
+    title: "Paskibra",
+    icon: "fa-solid fa-flag",
+    description: "Pelatihan baris-berbaris dan pengibaran bendera dengan kedisiplinan tinggi.",
+    schedule: "Rabu, 09:00 WIB"
+  },
+  {
+    id: "e8",
+    title: "Bandung Karate Club (BKC)",
+    icon: "fa-solid fa-user-ninja",
+    description: "Seni bela diri karate untuk kesehatan fisik dan perlindungan diri.",
+    schedule: "Sabtu, 09:00 WIB"
+  },
+  {
+    id: "e9",
+    title: "Keputrian",
+    icon: "fa-solid fa-person-dress",
+    description: "Wadah pembinaan khusus siswi mengenai keterampilan dan wawasan kewanitaan.",
+    schedule: "Jumat, 09:00 WIB"
+  },
+  {
+    id: "e10",
+    title: "Sanggar Seni",
+    icon: "fa-solid fa-masks-theater",
+    description: "Eksplorasi seni peran, teater, dan ekspresi kreatif siswa.",
+    schedule: "Senin, 09:00 WIB"
+  },
+  {
+    id: "e11",
+    title: "Seni Musik Tradisional",
+    icon: "fa-solid fa-guitar",
+    description: "Pelestarian budaya melalui alat musik tradisional nusantara.",
+    schedule: "Jumat, 09:00 WIB"
+  },
+  // OLAHRAGA
+  {
+    id: "e12",
+    title: "Futsal",
+    icon: "fa-solid fa-futbol",
+    description: "Olahraga bola besar untuk melatih ketangkasan dan kerjasama tim.",
+    schedule: "Selasa, 09:00 WIB"
+  },
+  {
+    id: "e13",
+    title: "Voly",
+    icon: "fa-solid fa-volleyball",
+    description: "Pelatihan teknik dasar dan strategi permainan bola voli.",
+    schedule: "Rabu, 09:00 WIB"
+  },
+  {
+    id: "e14",
+    title: "Bulu Tangkis",
+    icon: "fa-solid fa-medal",
+    description: "Olahraga raket untuk melatih kecepatan dan refleks.",
+    schedule: "Kamis, 09:00 WIB"
+  },
+  {
+    id: "e15",
+    title: "Tenis Meja",
+    icon: "fa-solid fa-table-tennis-paddle-ball",
+    description: "Olahraga bola kecil yang melatih konsentrasi dan koordinasi.",
+    schedule: "Senin, 09:00 WIB"
   }
 ];
 
@@ -580,7 +646,7 @@ export default function App() {
                     </div>
                     <div>
                       <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Alamat</h4>
-                      <p className="text-sm font-[500] text-black/70">Jl. Raya Pagelaran Km.61, <br/>Jawa Barat, Indonesia</p>
+                      <p className="text-sm font-[500] text-black/70">Jl. Raya Al-Manshuriyah No. 123, <br/>Jawa Barat, Indonesia</p>
                     </div>
                   </div>
 
@@ -590,7 +656,7 @@ export default function App() {
                     </div>
                     <div>
                       <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Email</h4>
-                      <p className="text-sm font-[500] text-black/70">besmaalmanshuriyah@gmail.com</p>
+                      <p className="text-sm font-[500] text-black/70">bes@almanshuriyah.sch.id</p>
                     </div>
                   </div>
 
@@ -688,7 +754,12 @@ export default function App() {
                   <div className="w-20 h-20 rounded-3xl neumorphic-raised flex items-center justify-center text-3xl text-black/80 mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
                     <i className={item.icon}></i>
                   </div>
-                  <h4 className="text-lg font-[800] tracking-tight text-black mb-3">{item.title}</h4>
+                  <h4 className="text-lg font-[800] tracking-tight text-black mb-1">{item.title}</h4>
+                  {item.subtitle && (
+                    <p className="text-[10px] font-[600] text-black/40 uppercase tracking-[2px] mb-3">
+                      {item.subtitle}
+                    </p>
+                  )}
                   <p className="text-[11px] font-[300] text-black/50 leading-relaxed mb-6">
                     {item.description}
                   </p>
