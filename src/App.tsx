@@ -225,7 +225,7 @@ const LINKS: LinkItem[] = [
   },
   {
     id: "2",
-    title: "Daftar Anggota",
+    title: "Anggota BES",
     subtitle: "Meet the Team",
     url: "#",
     icon: "fa-solid fa-users",
@@ -469,7 +469,7 @@ export default function App() {
             className="text-5xl font-[800] tracking-tight text-black font-display"
           >
             {currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
-             currentView === "structure" ? "DAFTAR ANGGOTA" : 
+             currentView === "structure" ? "ANGGOTA BES" : 
              currentView === "programs" ? "PROGRAM KERJA" : 
              currentView === "gallery" ? "GALERI KEGIATAN" : 
              currentView === "extracurricular" ? "EKSTRAKURIKULER" : 
@@ -606,7 +606,7 @@ export default function App() {
             
             <div className="mt-32 text-center max-w-lg px-6">
               <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[4px] leading-relaxed">
-                Daftar Anggota Badan Eksekutif Siswa <br/>
+                Anggota BES Badan Eksekutif Siswa <br/>
                 Madrasah Aliyah Al-Manshuriyah 2025/2026
               </p>
             </div>
@@ -678,11 +678,25 @@ export default function App() {
                 animate={{ opacity: 1, x: 0 }}
                 className="neumorphic-raised p-10 rounded-[3rem] glass-matte"
               >
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form 
+                  className="space-y-6" 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    const name = formData.get('name');
+                    const email = formData.get('email');
+                    const message = formData.get('message');
+                    const phone = "6285720914894";
+                    const text = `Halo Admin BES MA Al-Manshuriyah,\n\nSaya ingin menyampaikan pesan:\n\n*Nama:* ${name}\n*Email:* ${email}\n*Pesan:* ${message}`;
+                    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
+                  }}
+                >
                   <div className="space-y-2">
                     <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/30 ml-4">Nama Lengkap</label>
                     <input 
                       type="text" 
+                      name="name"
+                      required
                       placeholder="Masukkan nama Anda"
                       className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black placeholder:text-black/20 transition-all"
                       onMouseEnter={() => setCursorHovered(true)}
@@ -693,6 +707,8 @@ export default function App() {
                     <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/30 ml-4">Email</label>
                     <input 
                       type="email" 
+                      name="email"
+                      required
                       placeholder="email@example.com"
                       className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black placeholder:text-black/20 transition-all"
                       onMouseEnter={() => setCursorHovered(true)}
@@ -703,6 +719,8 @@ export default function App() {
                     <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/30 ml-4">Pesan</label>
                     <textarea 
                       rows={4}
+                      name="message"
+                      required
                       placeholder="Tuliskan pesan Anda di sini..."
                       className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black placeholder:text-black/20 transition-all resize-none"
                       onMouseEnter={() => setCursorHovered(true)}
@@ -710,6 +728,7 @@ export default function App() {
                     ></textarea>
                   </div>
                   <FlashButton
+                    type="submit"
                     whileHover={{ scale: 1.02, backgroundColor: "#1a1a1a" }}
                     whileTap={{ scale: 0.98 }}
                     className="w-full py-5 rounded-2xl neumorphic-raised-dark text-white text-[10px] font-[800] uppercase tracking-[4px] transition-all flex items-center justify-center space-x-3"
