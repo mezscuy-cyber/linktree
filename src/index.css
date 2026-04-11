@@ -12,6 +12,7 @@
   --shadow-dark: #d1d1d6;
   --shadow-light: #ffffff;
   --accent-color: #000000;
+  --primary-blue: #2563eb;
 }
 
 body {
@@ -22,6 +23,58 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  scroll-behavior: smooth;
+}
+
+/* Glass Shine Effect */
+.glass-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-shine::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 60%,
+    transparent 100%
+  );
+  transform: rotate(-45deg);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.glass-shine:hover::before {
+  left: 100%;
+  top: 100%;
+  opacity: 1;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--shadow-dark);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
 }
 
 body::before {
@@ -194,4 +247,27 @@ body::before {
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+}
+
+/* Text Shimmer Effect */
+.text-shimmer {
+  background: linear-gradient(
+    to right,
+    #000 20%,
+    #666 40%,
+    #000 60%,
+    #666 80%,
+    #000 100%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: shimmer 5s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
 }

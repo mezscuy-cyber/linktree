@@ -218,8 +218,8 @@ const LINKS: LinkItem[] = [
   {
     id: "1",
     title: "Pendaftaran Madrasah",
-    subtitle: "SPMB MA 2026/2027",
-    url: "https://docs.google.com/forms/d/e/1FAIpQLSf1GF5rpDBDPFCgWs_4xeSGaD9d2r4saDxMx2OtBiT0f3sj9Q/viewform",
+    subtitle: "PPDB MA 2026",
+    url: "https://s.id/PPDB_MA_2025",
     icon: "fa-solid fa-user-plus",
     delay: "0s",
   },
@@ -278,11 +278,13 @@ function FlashButton({
   className, 
   onMouseEnter, 
   onMouseLeave,
+  onMouseMove,
   whileHover,
   whileTap,
   initial,
   animate,
   transition,
+  style,
   type = "button"
 }: { 
   children: React.ReactNode; 
@@ -290,11 +292,13 @@ function FlashButton({
   className?: string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onMouseMove?: (e: React.MouseEvent) => void;
   whileHover?: any;
   whileTap?: any;
   initial?: any;
   animate?: any;
   transition?: any;
+  style?: React.CSSProperties;
   key?: string | number;
   type?: "button" | "submit" | "reset";
 }) {
@@ -313,10 +317,12 @@ function FlashButton({
       animate={animate}
       whileHover={whileHover}
       whileTap={whileTap}
+      style={style}
       onClick={handleClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      className={`relative overflow-hidden ${className}`}
+      onMouseMove={onMouseMove}
+      className={`relative overflow-hidden glass-shine ${className}`}
     >
       {showFlash && <div className="click-flash-effect" />}
       {children}
@@ -398,45 +404,10 @@ const SOCIAL_LINKS: SocialLink[] = [
   { id: "tk", icon: "fa-brands fa-tiktok", url: "https://www.tiktok.com/@alman_105?_r=1&_t=ZS-95N2GXRyCoB", color: "hover:text-[#000000]" },
 ];
 
-const TypewriterText = ({ text }: { text: string }) => {
-  return (
-    <motion.span key={text}>
-      {text.split("").map((char, index) => (
-        <motion.span
-          key={index}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.01,
-            delay: index * 0.03,
-          }}
-        >
-          {char}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
-};
-
 export default function App() {
   const [mounted, setMounted] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
   const [currentView, setCurrentView] = useState<"links" | "structure" | "programs" | "division_profile" | "gallery" | "extracurricular" | "contact">("links");
   const [selectedDivision, setSelectedDivision] = useState<string | null>(null);
-  const [hasPlayedSound, setHasPlayedSound] = useState(false);
-
-  const speakWelcome = () => {
-    if (hasPlayedSound || !window.speechSynthesis) return;
-    
-    const text = "Selamat datang di portal profil Badan Eksekutif Siswa";
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'id-ID'; // Indonesian
-    utterance.rate = 0.9; // Slightly slower for clarity
-    utterance.pitch = 1;
-    
-    window.speechSynthesis.speak(utterance);
-    setHasPlayedSound(true);
-  };
 
   const setCursorHovered = (_val: boolean) => {};
   
@@ -445,10 +416,10 @@ export default function App() {
   const mouseY = useMotionValue(0);
 
   // Parallax transforms for background shapes
-  const shape1X = useTransform(mouseX, [-500, 500], [-30, 30]);
-  const shape1Y = useTransform(mouseY, [-500, 500], [-30, 30]);
-  const shape2X = useTransform(mouseX, [-500, 500], [40, -40]);
-  const shape2Y = useTransform(mouseY, [-500, 500], [40, -40]);
+  const shape1X = useTransform(mouseX, [0, window.innerWidth], [-30, 30]);
+  const shape1Y = useTransform(mouseY, [0, window.innerHeight], [-30, 30]);
+  const shape2X = useTransform(mouseX, [0, window.innerWidth], [40, -40]);
+  const shape2Y = useTransform(mouseY, [0, window.innerHeight], [40, -40]);
 
   useEffect(() => {
     setMounted(true);
@@ -462,135 +433,12 @@ export default function App() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  const handleEnter = () => {
-    setShowSplash(false);
-    speakWelcome();
-  };
-
-  if (!mounted) return null;
-
   return (
     <>
-      <AnimatePresence>
-        {showSplash && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.05, filter: "blur(20px)" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#f8f8f8] overflow-hidden"
-          >
-            {/* Atmospheric Background */}
-            <div className="absolute inset-0 z-0">
-              <motion.div 
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.5, 0.3],
-                  x: [0, 50, 0],
-                  y: [0, -30, 0]
-                }}
-                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] rounded-full bg-blue-100/40 blur-[120px]" 
-              />
-              <motion.div 
-                animate={{ 
-                  scale: [1.2, 1, 1.2],
-                  opacity: [0.2, 0.4, 0.2],
-                  x: [0, -40, 0],
-                  y: [0, 60, 0]
-                }}
-                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-100/30 blur-[100px]" 
-              />
-              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] mix-blend-overlay" />
-            </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center z-10 text-center px-6"
-            >
-              {/* Enhanced Avatar/Logo Container */}
-              <motion.div 
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.5, duration: 1, type: "spring", stiffness: 100 }}
-                className="relative mb-12"
-              >
-                <div className="absolute inset-0 bg-black/5 blur-2xl rounded-full scale-110 animate-pulse" />
-                <div className="w-40 h-40 rounded-full neumorphic-raised p-4 flex items-center justify-center bg-white/80 backdrop-blur-sm relative overflow-hidden group">
-                  <motion.div 
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="absolute inset-0 opacity-[0.05] border-2 border-dashed border-black rounded-full scale-150"
-                  />
-                  <img 
-                    src="/logo.png" 
-                    alt="Logo BES" 
-                    className="w-28 h-28 object-contain relative z-10 drop-shadow-2xl"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://picsum.photos/seed/school-logo/400/400";
-                    }}
-                  />
-                </div>
-              </motion.div>
-              
-              <div className="space-y-4 mb-16">
-                <motion.h1 
-                  initial={{ opacity: 0, letterSpacing: "12px" }}
-                  animate={{ opacity: 1, letterSpacing: "6px" }}
-                  transition={{ delay: 0.7, duration: 1.2 }}
-                  className="text-4xl md:text-5xl font-[900] text-black uppercase font-display leading-none"
-                >
-                  PORTAL PROFIL
-                </motion.h1>
-                <motion.div
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "100%" }}
-                  transition={{ delay: 1, duration: 1 }}
-                  className="h-[1px] bg-black/10 max-w-[100px] mx-auto"
-                />
-                <motion.p 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.5 }}
-                  transition={{ delay: 1.2, duration: 1 }}
-                  className="text-[12px] font-[600] text-black uppercase tracking-[8px]"
-                >
-                  Badan Eksekutif Siswa
-                </motion.p>
-              </div>
-
-              <FlashButton
-                onClick={handleEnter}
-                whileHover={{ scale: 1.05, backgroundColor: "#000" }}
-                whileTap={{ scale: 0.95 }}
-                className="px-16 py-6 rounded-2xl neumorphic-raised-dark text-white text-[12px] font-[900] uppercase tracking-[6px] transition-all shadow-2xl shadow-black/20 group relative overflow-hidden"
-              >
-                <span className="relative z-10">Buka Portal</span>
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
-                />
-              </FlashButton>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5, duration: 1 }}
-              className="absolute bottom-12 text-center"
-            >
-              <p className="text-[10px] font-[700] text-black/20 uppercase tracking-[4px] flex items-center justify-center gap-3">
-                <span className="w-8 h-[1px] bg-black/10" />
-                Madrasah Aliyah Al-Manshuriyah
-                <span className="w-8 h-[1px] bg-black/10" />
-              </p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <motion.div 
-        initial={{ opacity: 0 }}
+      {mounted && (
+        <>
+          <motion.div 
+            initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="relative min-h-screen flex flex-col items-center py-20 px-6 overflow-x-hidden"
@@ -613,37 +461,32 @@ export default function App() {
             onClick={() => setCurrentView("links")}
           >
             <img
-              public="/logo.png"
+              src="/logo.png"
               alt="BES Al-Manshuriyah Logo"
               className="w-full h-full object-contain rounded-full"
               referrerPolicy="no-referrer"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://picsum.photos/seed/education/400/400";
-              }}
             />
           </motion.div>
         </div>
 
         <div className="space-y-3">
           <motion.h1 
-            initial={{ y: 30, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl font-[800] tracking-tight text-black font-display"
-          >
-            <TypewriterText text={
-              currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
-              currentView === "structure" ? "ANGGOTA BES" : 
-              currentView === "programs" ? "PROGRAM KERJA" : 
-              currentView === "gallery" ? "GALERI KEGIATAN" : 
-              currentView === "extracurricular" ? "EKSTRAKURIKULER" : 
-              currentView === "contact" ? "HUBUNGI KAMI" : "PROFIL ANGGOTA"
-            } />
-          </motion.h1>
-          <motion.p 
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="text-5xl font-[800] tracking-tight text-black font-display"
+          >
+            {currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
+             currentView === "structure" ? "ANGGOTA BES" : 
+             currentView === "programs" ? "PROGRAM KERJA" : 
+             currentView === "gallery" ? "GALERI KEGIATAN" : 
+             currentView === "extracurricular" ? "EKSTRAKURIKULER" : 
+             currentView === "contact" ? "HUBUNGI KAMI" : "PROFIL ANGGOTA"}
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
             className="text-[10px] font-[300] text-black uppercase tracking-[6px]"
           >
             Madrasah Aliyah Al-Manshuriyah
@@ -653,7 +496,7 @@ export default function App() {
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
             className="flex items-center justify-center space-x-4 pt-4"
           >
             {SOCIAL_LINKS.map((social) => (
@@ -741,7 +584,7 @@ export default function App() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="flex items-center p-4 rounded-2xl neumorphic-raised glass-matte group hover:bg-black/5 transition-colors duration-300"
+                        className="flex items-center p-4 rounded-2xl neumorphic-raised glass-matte glass-shine group hover:bg-black/5 transition-colors duration-300"
                       >
                         <div className="w-16 h-16 rounded-full overflow-hidden neumorphic-raised p-1 mr-5 shrink-0">
                           <img 
@@ -841,7 +684,7 @@ export default function App() {
               <motion.div 
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="neumorphic-raised p-10 rounded-[3rem] glass-matte"
+                className="neumorphic-raised p-10 rounded-[3rem] glass-matte glass-shine"
               >
                 <form 
                   className="space-y-6" 
@@ -933,7 +776,7 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="group relative p-8 rounded-[2.5rem] neumorphic-raised glass-matte flex flex-col items-center text-center hover:bg-black/5 transition-all duration-500"
+                  className="group relative p-8 rounded-[2.5rem] neumorphic-raised glass-matte glass-shine flex flex-col items-center text-center hover:bg-black/5 transition-all duration-500"
                 >
                   <div className="w-20 h-20 rounded-3xl neumorphic-raised flex items-center justify-center text-3xl text-black/80 mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
                     <i className={item.icon}></i>
@@ -984,7 +827,7 @@ export default function App() {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.6 }}
-                  className="group relative rounded-[2.5rem] overflow-hidden neumorphic-raised glass-matte p-2"
+                  className="group relative rounded-[2.5rem] overflow-hidden neumorphic-raised glass-matte glass-shine p-2"
                 >
                   <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden">
                     <img 
@@ -1132,6 +975,8 @@ export default function App() {
         </div>
       </footer>
     </motion.div>
+        </>
+      )}
     </>
   );
 }
@@ -1155,8 +1000,12 @@ function LinkCard({
   // Motion values for magnetic/tilt effect
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-100, 100], [10, -10]), { damping: 20, stiffness: 200 });
-  const rotateY = useSpring(useTransform(x, [-100, 100], [-10, 10]), { damping: 20, stiffness: 200 });
+  
+  const transformX = useTransform(x, [-100, 100], [-10, 10]);
+  const transformY = useTransform(y, [-100, 100], [10, -10]);
+  
+  const rotateX = useSpring(transformY, { damping: 20, stiffness: 200 });
+  const rotateY = useSpring(transformX, { damping: 20, stiffness: 200 });
   const springX = useSpring(x, { damping: 20, stiffness: 200 });
   const springY = useSpring(y, { damping: 20, stiffness: 200 });
 
@@ -1209,7 +1058,7 @@ function LinkCard({
       }}
       className={`
         relative block w-full p-8 rounded-[2.5rem] transition-all duration-500 ease-out
-        glass-matte
+        glass-matte glass-shine
         ${isPressed ? "neumorphic-pressed" : "neumorphic-raised"}
         ${isNavigating ? "ring-2 ring-black/5 animate-pulse shadow-[0_0_30px_rgba(0,0,0,0.05)]" : ""}
       `}
@@ -1224,7 +1073,7 @@ function LinkCard({
             <i className={`${link.icon} text-2xl`}></i>
           </motion.div>
           <div>
-            <h2 className="text-xl font-[800] tracking-tight text-black leading-tight">
+            <h2 className="text-xl font-[800] tracking-tight text-black leading-tight group-hover:text-blue-600 transition-colors duration-300">
               {link.title}
             </h2>
             <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[3px] mt-1">
@@ -1270,7 +1119,7 @@ const ProgramCard: React.FC<{
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       whileHover={{ y: -10 }}
-      className="p-8 rounded-[2rem] neumorphic-raised glass-matte flex flex-col items-center text-center group"
+      className="p-8 rounded-[2rem] neumorphic-raised glass-matte glass-shine flex flex-col items-center text-center group"
     >
       <div className="w-16 h-16 rounded-2xl neumorphic-raised flex items-center justify-center text-black mb-6 group-hover:scale-110 transition-transform duration-500">
         <i className={`${program.icon} text-2xl`}></i>
@@ -1307,7 +1156,7 @@ const OrganigramNode: React.FC<{
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       onClick={onViewProfile}
-      className={`relative flex flex-col items-center p-6 rounded-[2rem] neumorphic-raised glass-matte cursor-pointer transition-all duration-500 group ${
+      className={`relative flex flex-col items-center p-6 rounded-[2rem] neumorphic-raised glass-matte glass-shine cursor-pointer transition-all duration-500 group ${
         isMain ? "w-48 h-48 border-2 border-black/5" : "w-40 h-40"
       }`}
     >
@@ -1350,7 +1199,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.02, duration: 0.5 }}
-      className="group w-full aspect-[3/4] rounded-2xl overflow-hidden neumorphic-raised p-1 cursor-pointer bg-white/5 backdrop-blur-sm"
+      className="group w-full aspect-[3/4] rounded-2xl overflow-hidden neumorphic-raised glass-shine p-1 cursor-pointer bg-white/5 backdrop-blur-sm"
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       whileHover={{ y: -5, scale: 1.02 }}
