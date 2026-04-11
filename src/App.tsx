@@ -218,8 +218,8 @@ const LINKS: LinkItem[] = [
   {
     id: "1",
     title: "Pendaftaran Madrasah",
-    subtitle: "PPDB MA 2026",
-    url: "https://s.id/PPDB_MA_2025",
+    subtitle: "SPMB MA 2026/2027",
+    url: "https://docs.google.com/forms/d/e/1FAIpQLSf1GF5rpDBDPFCgWs_4xeSGaD9d2r4saDxMx2OtBiT0f3sj9Q/viewform",
     icon: "fa-solid fa-user-plus",
     delay: "0s",
   },
