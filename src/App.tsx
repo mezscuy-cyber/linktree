@@ -404,6 +404,60 @@ const SOCIAL_LINKS: SocialLink[] = [
   { id: "tk", icon: "fa-brands fa-tiktok", url: "https://www.tiktok.com/@alman_105?_r=1&_t=ZS-95N2GXRyCoB", color: "hover:text-[#000000]" },
 ];
 
+const MemberPhoto = ({ src, alt, className }: { src: string, alt: string, className: string }) => {
+  const [error, setError] = useState(false);
+
+  if (error || !src) {
+    return (
+      <div className={`${className} bg-neutral-100 flex items-center justify-center text-neutral-400`}>
+        <i className="fa-solid fa-user text-xl"></i>
+      </div>
+    );
+  }
+
+  return (
+    <img 
+      src={src} 
+      alt={alt} 
+      className={className}
+      referrerPolicy="no-referrer"
+      onError={() => setError(true)}
+    />
+  );
+};
+
+const LogoImage = () => {
+  const [error, setError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  return (
+    <div className="w-full h-full flex items-center justify-center">
+      {!error ? (
+        <img
+          src={`/logo.png${retryCount > 0 ? `?v=${retryCount}` : ""}`}
+          alt="BES Al-Manshuriyah Logo"
+          className="w-full h-full object-cover rounded-full"
+          referrerPolicy="no-referrer"
+          onLoad={() => console.log("Logo loaded successfully")}
+          onError={() => {
+            console.warn(`Logo load attempt ${retryCount + 1} failed.`);
+            if (retryCount < 3) {
+              setTimeout(() => setRetryCount(prev => prev + 1), 500);
+            } else {
+              setError(true);
+            }
+          }}
+        />
+      ) : (
+        <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 flex flex-col items-center justify-center text-white p-4">
+          <i className="fa-solid fa-users-gear text-3xl mb-1"></i>
+          <span className="text-[10px] font-bold tracking-widest">BES</span>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default function App() {
   const [mounted, setMounted] = useState(false);
   const [currentView, setCurrentView] = useState<"links" | "structure" | "programs" | "division_profile" | "gallery" | "extracurricular" | "contact">("links");
@@ -452,29 +506,25 @@ export default function App() {
 
       {/* Header Section */}
       <header className="flex flex-col items-center mb-12 text-center z-10">
-        <div className="avatar-pulse mb-10">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
-            animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="w-32 h-32 rounded-full neumorphic-raised p-2 relative z-10 cursor-pointer flex items-center justify-center bg-white/50"
+        <div className="mb-10 relative">
+          {/* Subtle pulse effect behind the logo */}
+          <div className="absolute inset-0 rounded-full bg-blue-400/10 blur-2xl animate-pulse" />
+          
+          <div
+            className="w-32 h-32 rounded-full neumorphic-raised p-3 relative z-20 cursor-pointer flex items-center justify-center bg-white shadow-2xl overflow-hidden group"
             onClick={() => setCurrentView("links")}
           >
-            <img
-              src="/logo.png"
-              alt="BES Al-Manshuriyah Logo"
-              className="w-full h-full object-contain rounded-full"
-              referrerPolicy="no-referrer"
-            />
-          </motion.div>
+            <LogoImage />
+          </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 relative z-20">
           <motion.h1 
-            initial={{ y: 20, opacity: 0 }}
+            key={currentView}
+            initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-5xl font-[800] tracking-tight text-black font-display"
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            className="text-4xl md:text-5xl font-black tracking-tight text-neutral-900 font-display"
           >
             {currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
              currentView === "structure" ? "ANGGOTA BES" : 
@@ -486,8 +536,8 @@ export default function App() {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-[10px] font-[300] text-black uppercase tracking-[6px]"
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="text-[10px] font-medium text-neutral-500 uppercase tracking-[6px]"
           >
             Madrasah Aliyah Al-Manshuriyah
           </motion.p>
@@ -587,11 +637,10 @@ export default function App() {
                         className="flex items-center p-4 rounded-2xl neumorphic-raised glass-matte glass-shine group hover:bg-black/5 transition-colors duration-300"
                       >
                         <div className="w-16 h-16 rounded-full overflow-hidden neumorphic-raised p-1 mr-5 shrink-0">
-                          <img 
+                          <MemberPhoto 
                             src={member.photo} 
                             alt={member.name} 
-                            className="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-500"
-                            referrerPolicy="no-referrer"
+                            className="w-full h-full object-cover rounded-full transition-all duration-500"
                           />
                         </div>
                         <div className="flex flex-col text-left overflow-hidden">
@@ -942,11 +991,10 @@ export default function App() {
                     className="p-6 rounded-[2rem] neumorphic-raised glass-matte flex flex-col items-center text-center group"
                   >
                     <div className="w-32 h-32 rounded-full overflow-hidden neumorphic-raised p-1 mb-6 group-hover:scale-105 transition-transform duration-500">
-                      <img 
-                        src={logo.png} 
+                      <MemberPhoto 
+                        src={member.photo} 
                         alt={member.name} 
-                        className="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-700"
-                        referrerPolicy="no-referrer"
+                        className="w-full h-full object-cover rounded-full transition-all duration-700"
                       />
                     </div>
                     <h4 className="text-sm font-[800] tracking-tight text-black mb-1">{member.name}</h4>
@@ -1205,11 +1253,10 @@ const MemberCard: React.FC<MemberCardProps> = ({
       whileHover={{ y: -5, scale: 1.02 }}
     >
       <div className="relative w-full h-full rounded-xl overflow-hidden">
-        <img 
+        <MemberPhoto 
           src={member.photo} 
           alt={member.name} 
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover transition-all duration-700"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-4 text-left">
           <h3 className="text-white font-[800] text-[10px] tracking-tight leading-tight mb-1">
