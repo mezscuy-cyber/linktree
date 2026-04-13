@@ -943,7 +943,7 @@ export default function App() {
                   >
                     <div className="w-32 h-32 rounded-full overflow-hidden neumorphic-raised p-1 mb-6 group-hover:scale-105 transition-transform duration-500">
                       <img 
-                        src={member.photo} 
+                        src={logo.png} 
                         alt={member.name} 
                         className="w-full h-full object-cover rounded-full grayscale group-hover:grayscale-0 transition-all duration-700"
                         referrerPolicy="no-referrer"
