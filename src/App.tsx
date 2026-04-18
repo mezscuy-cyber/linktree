@@ -409,7 +409,7 @@ const MemberPhoto = ({ src, alt, className }: { src: string, alt: string, classN
 
   if (error || !src) {
     return (
-      <div className={`${className} bg-neutral-100 flex items-center justify-center text-neutral-400`}>
+      <div className={`${className} bg-neutral-100 flex items-center justify-center text-black/40`}>
         <i className="fa-solid fa-user text-xl"></i>
       </div>
     );
@@ -458,10 +458,109 @@ const LogoImage = () => {
   );
 };
 
+const MemberModal: React.FC<{
+  member: Member | null;
+  onClose: () => void;
+}> = ({ member, onClose }) => {
+  if (!member) return null;
+
+  const division = PROGRAMS.find(p => p.divisionId === member.divisionId);
+
+  return (
+    <AnimatePresence>
+      {member && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.9, y: 20, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.9, y: 20, opacity: 0 }}
+            className="relative w-full max-w-md bg-white dark:bg-[#1a1a1d] rounded-[2.5rem] overflow-hidden neumorphic-raised p-8 flex flex-col items-center text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={onClose}
+              className="absolute top-6 right-6 w-10 h-10 rounded-full neumorphic-raised flex items-center justify-center text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+
+            <div className="w-48 h-48 rounded-full overflow-hidden neumorphic-raised p-1.5 mb-8">
+              <MemberPhoto 
+                src={member.photo} 
+                alt={member.name} 
+                className="w-full h-full object-cover rounded-full"
+              />
+            </div>
+
+            <div className="space-y-2 mb-8">
+              <h2 className="text-2xl font-[900] tracking-tight text-slate-900 dark:text-white leading-tight">
+                {member.name}
+              </h2>
+              <p className="text-xs font-[600] text-blue-600 dark:text-blue-400 uppercase tracking-[4px]">
+                {member.position}
+              </p>
+            </div>
+
+            <div className="w-full py-6 px-8 rounded-3xl bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/5">
+              <div className="flex items-center justify-center space-x-3 mb-2">
+                <i className={`${division?.icon} text-black/40 dark:text-white/40 text-sm`}></i>
+                <span className="text-[10px] font-[800] uppercase tracking-[2px] text-black/40 dark:text-white/40">
+                  Departemen
+                </span>
+              </div>
+              <p className="text-sm font-[700] text-slate-900 dark:text-white">
+                {division?.title}
+              </p>
+            </div>
+
+            <div className="mt-10 w-full grid grid-cols-2 gap-4">
+               <div className="p-4 rounded-2xl bg-black/5 dark:bg-white/5 flex flex-col items-center">
+                  <span className="text-[8px] font-[800] uppercase tracking-[1px] text-black/30 dark:text-white/30 mb-1">Status</span>
+                  <span className="text-[10px] font-[700] text-green-600 dark:text-green-400">Aktif</span>
+               </div>
+               <div className="p-4 rounded-2xl bg-black/5 dark:bg-white/5 flex flex-col items-center">
+                  <span className="text-[8px] font-[800] uppercase tracking-[1px] text-black/30 dark:text-white/30 mb-1">Angkatan</span>
+                  <span className="text-[10px] font-[700] text-slate-900 dark:text-white">2025/2026</span>
+               </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 export default function App() {
   const [mounted, setMounted] = useState(false);
   const [currentView, setCurrentView] = useState<"links" | "structure" | "programs" | "division_profile" | "gallery" | "extracurricular" | "contact">("links");
   const [selectedDivision, setSelectedDivision] = useState<string | null>(null);
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('isDarkMode');
+      return saved ? JSON.parse(saved) : false;
+    }
+    return false;
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('isDarkMode', JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const setCursorHovered = (_val: boolean) => {};
   
@@ -491,6 +590,21 @@ export default function App() {
     <>
       {mounted && (
         <>
+          {/* Dark Mode Toggle */}
+          <div className="fixed top-6 right-6 z-50 flex flex-col items-center gap-2">
+            <FlashButton
+              onClick={toggleDarkMode}
+              className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center text-xl text-black dark:text-white transition-all duration-300"
+              whileHover={{ scale: 1.1, rotate: 15 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <i className={`fa-solid ${isDarkMode ? 'fa-sun' : 'fa-moon'}`}></i>
+            </FlashButton>
+            <span className="text-[8px] font-bold uppercase tracking-widest text-black/50 dark:text-white/30">
+              {isDarkMode ? 'Terang' : 'Gelap'}
+            </span>
+          </div>
+
           <motion.div 
             initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -510,8 +624,13 @@ export default function App() {
           {/* Subtle pulse effect behind the logo */}
           <div className="absolute inset-0 rounded-full bg-blue-400/10 blur-2xl animate-pulse" />
           
+          {/* LED Pulse Rings */}
+          <div className="led-pulse-ring" />
+          <div className="led-pulse-ring" />
+          <div className="led-pulse-ring" />
+          
           <div
-            className="w-32 h-32 rounded-full neumorphic-raised p-3 relative z-20 cursor-pointer flex items-center justify-center bg-white shadow-2xl overflow-hidden group"
+            className="w-32 h-32 rounded-full neumorphic-raised p-3 relative z-20 cursor-pointer flex items-center justify-center shadow-2xl overflow-hidden group"
             onClick={() => setCurrentView("links")}
           >
             <LogoImage />
@@ -524,7 +643,7 @@ export default function App() {
             initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="text-4xl md:text-5xl font-black tracking-tight text-neutral-900 font-display"
+            className="text-4xl md:text-5xl font-black tracking-tight text-slate-900 dark:text-white font-display"
           >
             {currentView === "links" ? "BADAN EKSEKUTIF SISWA" : 
              currentView === "structure" ? "ANGGOTA BES" : 
@@ -537,7 +656,7 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-[10px] font-medium text-neutral-500 uppercase tracking-[6px]"
+            className="text-[10px] font-medium text-slate-500 dark:text-white/50 uppercase tracking-[6px]"
           >
             Madrasah Aliyah Al-Manshuriyah
           </motion.p>
@@ -555,7 +674,7 @@ export default function App() {
                 onClick={() => { window.open(social.url, "_blank"); }}
                 whileHover={{ y: -3, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className={`w-10 h-10 flex items-center justify-center rounded-xl neumorphic-raised-sm text-lg text-black/40 transition-all duration-300 ${social.color} hover:bg-white/50`}
+                className={`w-10 h-10 flex items-center justify-center rounded-xl neumorphic-raised-sm text-lg text-black/60 dark:text-white/40 transition-all duration-300 ${social.color} hover:bg-white/50 dark:hover:bg-white/10`}
               >
                 <i className={social.icon}></i>
               </FlashButton>
@@ -610,7 +729,7 @@ export default function App() {
               animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               onClick={() => setCurrentView("links")}
-              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 hover:text-black transition-colors z-30"
+              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors z-30"
               onMouseEnter={() => setCursorHovered(true)}
               onMouseLeave={() => setCursorHovered(false)}
             >
@@ -621,7 +740,7 @@ export default function App() {
               {/* Group by Category */}
               {["Pejabat Teras", "Divisi"].map((category) => (
                 <div key={category} className="space-y-10">
-                  <h3 className="text-[12px] font-[800] uppercase tracking-[8px] text-black/20 text-center">
+                  <h3 className="text-[12px] font-[800] uppercase tracking-[8px] text-black/40 dark:text-white/20 text-center">
                     {category === "Divisi" ? "Departemen Organisasi" : category}
                   </h3>
                   
@@ -634,7 +753,8 @@ export default function App() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="flex items-center p-4 rounded-2xl neumorphic-raised glass-matte glass-shine group hover:bg-black/5 transition-colors duration-300"
+                        onClick={() => setSelectedMember(member)}
+                        className="flex items-center p-4 rounded-2xl neumorphic-raised glass-matte glass-shine group hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 cursor-pointer"
                       >
                         <div className="w-16 h-16 rounded-full overflow-hidden neumorphic-raised p-1 mr-5 shrink-0">
                           <MemberPhoto 
@@ -644,12 +764,12 @@ export default function App() {
                           />
                         </div>
                         <div className="flex flex-col text-left overflow-hidden">
-                          <h4 className="text-sm font-[800] tracking-tight text-black truncate">{member.name}</h4>
-                          <p className="text-[9px] font-[300] text-black/40 uppercase tracking-[2px] truncate">
+                          <h4 className="text-sm font-[800] tracking-tight text-black dark:text-white truncate">{member.name}</h4>
+                          <p className="text-[9px] font-[300] text-black/60 dark:text-white/40 uppercase tracking-[2px] truncate">
                             {member.position}
                           </p>
                           <div className="flex items-center mt-1">
-                             <span className="text-[7px] font-[600] text-black/20 uppercase tracking-[1px]">
+                             <span className="text-[7px] font-[600] text-black/40 dark:text-white/20 uppercase tracking-[1px]">
                                {PROGRAMS.find(p => p.divisionId === member.divisionId)?.title}
                              </span>
                           </div>
@@ -662,7 +782,7 @@ export default function App() {
             </div>
             
             <div className="mt-32 text-center max-w-lg px-6">
-              <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[4px] leading-relaxed">
+              <p className="text-[10px] font-[300] text-black/60 dark:text-white/40 uppercase tracking-[4px] leading-relaxed">
                 Anggota BES Badan Eksekutif Siswa <br/>
                 Madrasah Aliyah Al-Manshuriyah 2025/2026
               </p>
@@ -675,7 +795,7 @@ export default function App() {
               animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               onClick={() => setCurrentView("links")}
-              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 hover:text-black transition-colors z-30"
+              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors z-30"
               onMouseEnter={() => setCursorHovered(true)}
               onMouseLeave={() => setCursorHovered(false)}
             >
@@ -690,40 +810,40 @@ export default function App() {
                 className="space-y-10"
               >
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-[800] tracking-tight text-black font-display">Mari Berkolaborasi</h3>
-                  <p className="text-sm font-[300] text-black/50 leading-relaxed max-w-md">
+                  <h3 className="text-2xl font-[800] tracking-tight text-black dark:text-white font-display">Mari Berkolaborasi</h3>
+                  <p className="text-sm font-[300] text-black/50 dark:text-white/50 leading-relaxed max-w-md">
                     Punya pertanyaan, saran, atau ingin bekerjasama dengan BES MA Al-Manshuriyah? Kami siap mendengar dari Anda.
                   </p>
                 </div>
 
                 <div className="space-y-6">
                   <div className="flex items-start space-x-6">
-                    <div className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center shrink-0 text-black/60">
+                    <div className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center shrink-0 text-black/60 dark:text-white/60">
                       <i className="fa-solid fa-location-dot"></i>
                     </div>
                     <div>
-                      <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Alamat</h4>
-                      <p className="text-sm font-[500] text-black/70">Jl. Raya Al-Manshuriyah No. 123, <br/>Jawa Barat, Indonesia</p>
+                      <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/50 dark:text-white/30 mb-1">Alamat</h4>
+                      <p className="text-sm font-[500] text-black/70 dark:text-white/70">Jl. Raya Al-Manshuriyah No. 123, <br/>Jawa Barat, Indonesia</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-6">
-                    <div className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center shrink-0 text-black/60">
+                    <div className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center shrink-0 text-black/60 dark:text-white/60">
                       <i className="fa-solid fa-envelope"></i>
                     </div>
                     <div>
-                      <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Email</h4>
-                      <p className="text-sm font-[500] text-black/70">bes@almanshuriyah.sch.id</p>
+                      <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/50 dark:text-white/30 mb-1">Email</h4>
+                      <p className="text-sm font-[500] text-black/70 dark:text-white/70">bes@almanshuriyah.sch.id</p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-6">
-                    <div className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center shrink-0 text-black/60">
+                    <div className="w-12 h-12 rounded-2xl neumorphic-raised flex items-center justify-center shrink-0 text-black/60 dark:text-white/60">
                       <i className="fa-solid fa-phone"></i>
                     </div>
                     <div>
-                      <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/30 mb-1">Telepon</h4>
-                      <p className="text-sm font-[500] text-black/70">+62 812 3456 7890</p>
+                      <h4 className="text-[10px] font-[800] uppercase tracking-[2px] text-black/50 dark:text-white/30 mb-1">Telepon</h4>
+                      <p className="text-sm font-[500] text-black/70 dark:text-white/70">+62 812 3456 7890</p>
                     </div>
                   </div>
                 </div>
@@ -749,37 +869,37 @@ export default function App() {
                   }}
                 >
                   <div className="space-y-2">
-                    <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/30 ml-4">Nama Lengkap</label>
+                    <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/50 dark:text-white/30 ml-4">Nama Lengkap</label>
                     <input 
                       type="text" 
                       name="name"
                       required
                       placeholder="Masukkan nama Anda"
-                      className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black placeholder:text-black/20 transition-all"
+                      className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/20 transition-all"
                       onMouseEnter={() => setCursorHovered(true)}
                       onMouseLeave={() => setCursorHovered(false)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/30 ml-4">Email</label>
+                    <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/50 dark:text-white/30 ml-4">Email</label>
                     <input 
                       type="email" 
                       name="email"
                       required
                       placeholder="email@example.com"
-                      className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black placeholder:text-black/20 transition-all"
+                      className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/20 transition-all"
                       onMouseEnter={() => setCursorHovered(true)}
                       onMouseLeave={() => setCursorHovered(false)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/30 ml-4">Pesan</label>
+                    <label className="text-[9px] font-[800] uppercase tracking-[2px] text-black/50 dark:text-white/30 ml-4">Pesan</label>
                     <textarea 
                       rows={4}
                       name="message"
                       required
                       placeholder="Tuliskan pesan Anda di sini..."
-                      className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black placeholder:text-black/20 transition-all resize-none"
+                      className="w-full px-6 py-4 rounded-2xl neumorphic-pressed bg-transparent border-none focus:ring-0 text-sm font-[500] text-black dark:text-white placeholder:text-black/40 dark:placeholder:text-white/20 transition-all resize-none"
                       onMouseEnter={() => setCursorHovered(true)}
                       onMouseLeave={() => setCursorHovered(false)}
                     ></textarea>
@@ -798,7 +918,7 @@ export default function App() {
             </div>
 
             <div className="mt-32 text-center max-w-lg px-6">
-              <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[4px] leading-relaxed">
+              <p className="text-[10px] font-[300] text-black/60 dark:text-white/40 uppercase tracking-[4px] leading-relaxed">
                 Layanan Informasi & Aspirasi Siswa <br/>
                 Madrasah Aliyah Al-Manshuriyah
               </p>
@@ -811,7 +931,7 @@ export default function App() {
               animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               onClick={() => setCurrentView("links")}
-              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 hover:text-black transition-colors z-30"
+              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors z-30"
               onMouseEnter={() => setCursorHovered(true)}
               onMouseLeave={() => setCursorHovered(false)}
             >
@@ -827,20 +947,20 @@ export default function App() {
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                   className="group relative p-8 rounded-[2.5rem] neumorphic-raised glass-matte glass-shine flex flex-col items-center text-center hover:bg-black/5 transition-all duration-500"
                 >
-                  <div className="w-20 h-20 rounded-3xl neumorphic-raised flex items-center justify-center text-3xl text-black/80 mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
+                  <div className="w-20 h-20 rounded-3xl neumorphic-raised flex items-center justify-center text-3xl text-black/80 dark:text-white/80 mb-6 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500">
                     <i className={item.icon}></i>
                   </div>
-                  <h4 className="text-lg font-[800] tracking-tight text-black mb-1">{item.title}</h4>
+                  <h4 className="text-lg font-[800] tracking-tight text-black dark:text-white mb-1">{item.title}</h4>
                   {item.subtitle && (
-                    <p className="text-[10px] font-[600] text-black/40 uppercase tracking-[2px] mb-3">
+                    <p className="text-[10px] font-[600] text-black/40 dark:text-white/40 uppercase tracking-[2px] mb-3">
                       {item.subtitle}
                     </p>
                   )}
-                  <p className="text-[11px] font-[300] text-black/50 leading-relaxed mb-6">
+                  <p className="text-[11px] font-[300] text-black/50 dark:text-white/50 leading-relaxed mb-6">
                     {item.description}
                   </p>
-                  <div className="mt-auto pt-4 border-t border-black/5 w-full">
-                    <span className="text-[9px] font-[600] text-black/30 uppercase tracking-[2px]">
+                  <div className="mt-auto pt-4 border-t border-black/5 dark:border-white/5 w-full">
+                    <span className="text-[9px] font-[600] text-black/30 dark:text-white/30 uppercase tracking-[2px]">
                       <i className="fa-regular fa-clock mr-2"></i> {item.schedule}
                     </span>
                   </div>
@@ -849,7 +969,7 @@ export default function App() {
             </div>
 
             <div className="mt-32 text-center max-w-lg px-6">
-              <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[4px] leading-relaxed">
+              <p className="text-[10px] font-[300] text-black/60 dark:text-white/40 uppercase tracking-[4px] leading-relaxed">
                 Pengembangan Bakat & Minat Siswa <br/>
                 Madrasah Aliyah Al-Manshuriyah
               </p>
@@ -862,7 +982,7 @@ export default function App() {
               animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               onClick={() => setCurrentView("links")}
-              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 hover:text-black transition-colors z-30"
+              className="mb-16 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors z-30"
               onMouseEnter={() => setCursorHovered(true)}
               onMouseLeave={() => setCursorHovered(false)}
             >
@@ -904,7 +1024,7 @@ export default function App() {
             </div>
 
             <div className="mt-32 text-center max-w-lg px-6">
-              <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[4px] leading-relaxed">
+              <p className="text-[10px] font-[300] text-black/40 dark:text-white/40 uppercase tracking-[4px] leading-relaxed">
                 Dokumentasi Kegiatan Badan Eksekutif Siswa <br/>
                 Madrasah Aliyah Al-Manshuriyah 2024/2025
               </p>
@@ -917,7 +1037,7 @@ export default function App() {
               animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               onClick={() => setCurrentView("links")}
-              className="mb-12 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 hover:text-black transition-colors z-30"
+              className="mb-12 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors z-30"
             >
               <i className="fa-solid fa-arrow-left mr-2"></i> Kembali
             </FlashButton>
@@ -925,7 +1045,7 @@ export default function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
               {/* Pejabat Teras Section */}
               <div className="md:col-span-2 mb-8">
-                <h3 className="text-[12px] font-[800] uppercase tracking-[5px] text-black/30 mb-8 text-center">Pejabat Teras</h3>
+                <h3 className="text-[12px] font-[800] uppercase tracking-[5px] text-black/50 dark:text-white/30 mb-8 text-center">Pejabat Teras</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {PROGRAMS.filter(p => p.category === "Pejabat Teras").map((program, index) => (
                     <ProgramCard 
@@ -945,7 +1065,7 @@ export default function App() {
 
               {/* Divisi Section */}
               <div className="md:col-span-2">
-                <h3 className="text-[12px] font-[800] uppercase tracking-[5px] text-black/30 mb-8 text-center">Departemen Organisasi</h3>
+                <h3 className="text-[12px] font-[800] uppercase tracking-[5px] text-black/50 dark:text-white/30 mb-8 text-center">Departemen Organisasi</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {PROGRAMS.filter(p => p.category === "Divisi").map((program, index) => (
                     <ProgramCard 
@@ -971,13 +1091,13 @@ export default function App() {
               animate={{ opacity: 0.6 }}
               whileHover={{ opacity: 1 }}
               onClick={() => setCurrentView("programs")}
-              className="mb-12 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 hover:text-black transition-colors z-30"
+              className="mb-12 px-6 py-3 rounded-full neumorphic-raised text-[10px] font-[600] uppercase tracking-[3px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors z-30"
             >
               <i className="fa-solid fa-arrow-left mr-2"></i> Kembali ke Program Kerja
             </motion.button>
 
             <div className="w-full max-w-5xl">
-              <h3 className="text-[12px] font-[800] uppercase tracking-[5px] text-black/30 mb-12 text-center">
+              <h3 className="text-[12px] font-[800] uppercase tracking-[5px] text-black/30 dark:text-white/30 mb-12 text-center">
                 {PROGRAMS.find(p => p.divisionId === selectedDivision)?.title}
               </h3>
               
@@ -988,7 +1108,8 @@ export default function App() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="p-6 rounded-[2rem] neumorphic-raised glass-matte flex flex-col items-center text-center group"
+                    onClick={() => setSelectedMember(member)}
+                    className="p-6 rounded-[2rem] neumorphic-raised glass-matte flex flex-col items-center text-center group cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300"
                   >
                     <div className="w-32 h-32 rounded-full overflow-hidden neumorphic-raised p-1 mb-6 group-hover:scale-105 transition-transform duration-500">
                       <MemberPhoto 
@@ -997,8 +1118,8 @@ export default function App() {
                         className="w-full h-full object-cover rounded-full transition-all duration-700"
                       />
                     </div>
-                    <h4 className="text-sm font-[800] tracking-tight text-black mb-1">{member.name}</h4>
-                    <p className="text-[9px] font-[300] text-black/40 uppercase tracking-[2px]">
+                    <h4 className="text-sm font-[800] tracking-tight text-black dark:text-white mb-1">{member.name}</h4>
+                    <p className="text-[9px] font-[300] text-black/40 dark:text-white/40 uppercase tracking-[2px]">
                       {member.position}
                     </p>
                   </motion.div>
@@ -1011,17 +1132,22 @@ export default function App() {
 
       {/* Footer Marquee */}
       <footer className="mt-32 w-full z-10">
-        <div className="marquee-container border-t border-black/5">
+        <div className="marquee-container border-t border-black/5 dark:border-white/5">
           <div className="marquee-content">
-            <span className="text-[10px] font-[300] uppercase tracking-[8px] text-black mx-10">
+            <span className="text-[10px] font-[300] uppercase tracking-[8px] text-black dark:text-white mx-10">
               BES MA AL-MANSHURIYAH &bull; BADAN EKSEKUTIF SISWA &bull; DIGITAL VISIONARY &bull; INNOVATIVE LEADERSHIP &bull;
             </span>
-            <span className="text-[10px] font-[300] uppercase tracking-[8px] text-black mx-10">
+            <span className="text-[10px] font-[300] uppercase tracking-[8px] text-black dark:text-white mx-10">
               BES MA AL-MANSHURIYAH &bull; BADAN EKSEKUTIF SISWA &bull; DIGITAL VISIONARY &bull; INNOVATIVE LEADERSHIP &bull;
             </span>
           </div>
         </div>
       </footer>
+
+      <MemberModal 
+        member={selectedMember} 
+        onClose={() => setSelectedMember(null)} 
+      />
     </motion.div>
         </>
       )}
@@ -1116,26 +1242,26 @@ function LinkCard({
         <div className="flex items-center space-x-6">
           <motion.div 
             whileHover={{ scale: 1.1, rotate: 5 }}
-            className="w-14 h-14 rounded-2xl neumorphic-raised flex items-center justify-center text-black"
+            className="w-14 h-14 rounded-2xl neumorphic-raised flex items-center justify-center text-black dark:text-white"
           >
             <i className={`${link.icon} text-2xl`}></i>
           </motion.div>
           <div>
-            <h2 className="text-xl font-[800] tracking-tight text-black leading-tight group-hover:text-blue-600 transition-colors duration-300">
+            <h2 className="text-xl font-[800] tracking-tight text-slate-900 dark:text-white leading-tight group-hover:text-blue-600 transition-colors duration-300">
               {link.title}
             </h2>
-            <p className="text-[10px] font-[300] text-black/40 uppercase tracking-[3px] mt-1">
+            <p className="text-[10px] font-[300] text-slate-500 dark:text-white/40 uppercase tracking-[3px] mt-1">
               {link.subtitle}
             </p>
           </div>
         </div>
         
-        <div className="text-black/20">
+        <div className="text-black/40 dark:text-white/20">
           {isNavigating ? (
             <motion.i 
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-              className="fa-solid fa-circle-notch text-sm text-black/40"
+              className="fa-solid fa-circle-notch text-sm text-black/40 dark:text-white/40"
             />
           ) : (
             <i className="fa-solid fa-chevron-right text-sm"></i>
@@ -1169,11 +1295,11 @@ const ProgramCard: React.FC<{
       whileHover={{ y: -10 }}
       className="p-8 rounded-[2rem] neumorphic-raised glass-matte glass-shine flex flex-col items-center text-center group"
     >
-      <div className="w-16 h-16 rounded-2xl neumorphic-raised flex items-center justify-center text-black mb-6 group-hover:scale-110 transition-transform duration-500">
+      <div className="w-16 h-16 rounded-2xl neumorphic-raised flex items-center justify-center text-black dark:text-white mb-6 group-hover:scale-110 transition-transform duration-500">
         <i className={`${program.icon} text-2xl`}></i>
       </div>
-      <h4 className="text-lg font-[800] tracking-tight text-black mb-3">{program.title}</h4>
-      <p className="text-[10px] font-[300] text-black/50 uppercase tracking-[2px] leading-relaxed mb-6">
+      <h4 className="text-lg font-[800] tracking-tight text-slate-900 dark:text-white mb-3">{program.title}</h4>
+      <p className="text-[10px] font-[300] text-slate-500 dark:text-white/40 uppercase tracking-[2px] leading-relaxed mb-6">
         {program.description}
       </p>
       
@@ -1183,7 +1309,7 @@ const ProgramCard: React.FC<{
         onClick={() => {
           onViewProfile();
         }}
-        className="mt-auto px-5 py-2.5 rounded-full neumorphic-raised text-[9px] font-[700] uppercase tracking-[2px] text-black/60 hover:text-black transition-colors"
+        className="mt-auto px-5 py-2.5 rounded-full neumorphic-raised text-[9px] font-[700] uppercase tracking-[2px] text-black/60 dark:text-white/40 hover:text-black dark:hover:text-white transition-colors"
       >
         Lihat Profil Anggota
       </FlashButton>
@@ -1205,25 +1331,25 @@ const OrganigramNode: React.FC<{
       onMouseLeave={onHoverEnd}
       onClick={onViewProfile}
       className={`relative flex flex-col items-center p-6 rounded-[2rem] neumorphic-raised glass-matte glass-shine cursor-pointer transition-all duration-500 group ${
-        isMain ? "w-48 h-48 border-2 border-black/5" : "w-40 h-40"
+        isMain ? "w-48 h-48 border-2 border-black/5 dark:border-white/5" : "w-40 h-40"
       }`}
     >
-      <div className={`rounded-2xl neumorphic-raised flex items-center justify-center text-black mb-4 group-hover:scale-110 transition-transform duration-500 ${
+      <div className={`rounded-2xl neumorphic-raised flex items-center justify-center text-black dark:text-white mb-4 group-hover:scale-110 transition-transform duration-500 ${
         isMain ? "w-16 h-16 text-2xl" : "w-12 h-12 text-xl"
       }`}>
         <i className={program.icon}></i>
       </div>
-      <h4 className={`font-[800] tracking-tight text-black text-center leading-tight ${
+      <h4 className={`font-[800] tracking-tight text-slate-900 dark:text-white text-center leading-tight ${
         isMain ? "text-sm" : "text-[11px]"
       }`}>
         {program.title}
       </h4>
-      <p className="text-[8px] font-[300] text-black/40 uppercase tracking-[2px] mt-2 text-center">
+      <p className="text-[8px] font-[300] text-slate-500 dark:text-white/40 uppercase tracking-[2px] mt-2 text-center">
         {program.category === "Pejabat Teras" ? "Executive" : "Departemen"}
       </p>
       
-      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 rounded-[2rem] transition-opacity duration-500 flex items-center justify-center">
-        <span className="text-[8px] font-[700] uppercase tracking-[1px] text-black/60">Lihat Anggota</span>
+      <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 rounded-[2rem] transition-opacity duration-500 flex items-center justify-center">
+        <span className="text-[8px] font-[700] uppercase tracking-[1px] text-black/80 dark:text-white/40">Lihat Anggota</span>
       </div>
     </motion.div>
   );
@@ -1269,8 +1395,8 @@ const MemberCard: React.FC<MemberCardProps> = ({
         
         {/* Static Label for non-hover */}
         <div className="absolute bottom-2 left-2 right-2 group-hover:opacity-0 transition-opacity duration-300">
-          <div className="bg-white/90 backdrop-blur-md py-1.5 px-2 rounded-lg shadow-sm">
-            <h3 className="text-[7px] font-[800] tracking-tight text-black truncate">
+          <div className="bg-white/90 dark:bg-black/90 backdrop-blur-md py-1.5 px-2 rounded-lg shadow-sm">
+            <h3 className="text-[7px] font-[800] tracking-tight text-black dark:text-white truncate">
               {member.name}
             </h3>
           </div>
